@@ -159,6 +159,19 @@ def main():
         verbose=2
     )
 
+     if model_out:
+        model.save(model_out)
+        print(f'Model saved to {model_out}')
+
+    print('Evaluating model...')
+    loss, acc = model.evaluate(X_test, y_test, verbose=2)
+    print(f'Model accuracy: {acc:.4f}')
+
+    y_pred_prob = model.predict(X_test)
+    y_pred = np.argmax(y_pred_prob, axis=1)
+    print('\nClassification report:')
+    print(classification_report(y_test_raw, y_pred, digits=4))
+
 
 
 
