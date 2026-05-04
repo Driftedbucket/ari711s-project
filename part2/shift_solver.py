@@ -77,6 +77,16 @@ and shift_x == "Morning"
 and day_x == day_y + 1
 )
     def enforce_node_consistency(self) -> None:
+        """
+Remove nurses from a shift's domain if they are on leave that day.
+"""
+for variable in self.variables:
+day_number, _ = self._parse_variable(variable)
+self.domains[variable] = {
+nurse
+for nurse in self.domains[variable]
+if day_number not in self.staff_leaves[nurse]
+}
     def revise(self, x: str, y: str) -> bool:
     def ac3(self, arcs: list[tuple[str, str]] | None = None) -> bool:
     def assignment_complete(self, assignment: dict[str, str]) -> bool:
