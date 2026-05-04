@@ -21,6 +21,15 @@ class Shift_Solver:
     MAX_SHIFTS_PER_NURSE = 5
 
     def __init__(self, staff_file:str|Path):
+        self.staff_file = Path(staff_file)
+        self.staff_leaves = self._load_staff(self.staff_file)
+        self.nurses = sorted(self.staff_leaves.keys())
+        self.variables = [
+            f"{day}_{shift}" for day in self.DAYS for shift in self.SHIFTS
+        ]
+        self.domains = {variable: set(self.nurses) for variable in self.variables}
+        self.neighbors = {variable: set() for variable in self.variables}
+        self._build_neighbors()
 
     def _load_staff(self, staff_file: Path) -> dict[str, set[int]]:
     def _build_neighbors(self) -> None:
