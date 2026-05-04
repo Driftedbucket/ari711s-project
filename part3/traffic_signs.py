@@ -64,7 +64,27 @@ def load_data(dataset_path, max_per_class=None, sample_fraction=None):
     num_classes = int(np.unique(y).shape[0])
     y_cat = to_categorical(y, num_classes)
     return X, y_cat, y, num_classes
+
+
 def build_model(input_shape, num_classes):
+    model = Sequential([
+        Conv2D(32, (3, 3), activation='relu', padding='same', input_shape=input_shape),
+        BatchNormalization(),
+        Conv2D(32, (3, 3), activation='relu', padding='same'),
+        MaxPooling2D(),
+        Dropout(0.25),
+
+        Conv2D(64, (3, 3), activation='relu', padding='same'),
+        BatchNormalization(),
+        Conv2D(64, (3, 3), activation='relu', padding='same'),
+        MaxPooling2D(),
+        Dropout(0.25),
+
+        Flatten(),
+        Dense(256, activation='relu'),
+        Dropout(0.5),
+        Dense(num_classes, activation='softmax')
+    ])
 def plot_samples(X, y_true, y_pred, class_map=None, n=8):
 def main():
 
