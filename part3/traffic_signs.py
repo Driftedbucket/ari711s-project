@@ -87,7 +87,23 @@ def build_model(input_shape, num_classes):
     ])
     model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
     return model
+
+
 def plot_samples(X, y_true, y_pred, class_map=None, n=8):
+    idx = list(range(len(X)))
+    random.shuffle(idx)
+    idx = idx[:n]
+    plt.figure(figsize=(12, 3))
+    for i, k in enumerate(idx):
+        plt.subplot(1, n, i+1)
+        plt.axis('off')
+        plt.imshow(X[k])
+        true = y_true[k]
+        pred = y_pred[k]
+        tlabel = class_map[true] if class_map else str(true)
+        plabel = class_map[pred] if class_map else str(pred)
+        color = 'green' if true == pred else 'red'
+        plt.title(f'T:{tlabel}\nP:{plabel}', color=color, fontsize=8)
 def main():
 
 
