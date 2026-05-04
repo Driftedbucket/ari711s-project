@@ -176,6 +176,12 @@ def main():
     cm = confusion_matrix(y_test_raw, y_pred)
     print(cm)
 
+    if not no_plot:
+        try:
+            plot_samples(X_test, y_test_raw, y_pred, n=8)
+        except Exception:
+            pass
+
 
 
 
