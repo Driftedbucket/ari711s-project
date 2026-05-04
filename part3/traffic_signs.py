@@ -120,6 +120,13 @@ def main():
     parser.add_argument('--no-plot', action='store_true', help='Do not show sample plots')
     args = parser.parse_args()
 
+    dataset_path = args.dataset
+    model_out = args.model_out
+    no_plot = getattr(args, 'no_plot', False)
+
+    if not os.path.isdir(dataset_path):
+        print(f"Dataset path not found or not a directory: {dataset_path}")
+        sys.exit(1)
 
 
 
