@@ -85,6 +85,8 @@ def build_model(input_shape, num_classes):
         Dropout(0.5),
         Dense(num_classes, activation='softmax')
     ])
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    return model
 def plot_samples(X, y_true, y_pred, class_map=None, n=8):
 def main():
 
