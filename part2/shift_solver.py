@@ -95,6 +95,31 @@ if day_number not in self.staff_leaves[nurse]
     def order_domain_values(self, variable: str, assignment: dict[str, str]) -> list[str]:
     def _forward_check(self, variable: str, nurse: str, assignment: dict[str, str]) -> bool:
     def backtrack(self, assignment: dict[str, str]) -> dict[str, str] | None:
+        if self.assignment_complete(assignment):
+return assignment
+
+variable = self.select_unassigned_variable(assignment)
+
+for nurse in self.order_domain_values(variable, assignment):
+local_assignment = dict(assignment)
+local_assignment[variable] = nurse
+
+if not self.consistent(local_assignment):
+continue
+
+saved_domains = deepcopy(self.domains)
+self.domains[variable] = {nurse}
+
+if self._forward_check(variable, nurse, local_assignment):
+neighbor_arcs = [(neighbor, variable) for neighbor in self.neighbors[variable]]
+if self.ac3(neighbor_arcs):
+result = self.backtrack(local_assignment)
+if result is not None:
+return result
+
+self.domains = saved_domains
+
+return None
     def solve(self) -> dict[str, str] | None:
     def format_schedule(self, assignment: dict[str, str]) -> str:
     def main() -> None:
