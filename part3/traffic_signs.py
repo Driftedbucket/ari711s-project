@@ -108,6 +108,18 @@ def plot_samples(X, y_true, y_pred, class_map=None, n=8):
     plt.show()
 def main():
 
+    parser = argparse.ArgumentParser(description='Train a traffic sign classifier (GTSRB)')
+    parser.add_argument('dataset', help='Path to dataset folder (contains numeric subfolders)')
+    parser.add_argument('model_out', nargs='?', default=None, help='Optional output model filename (e.g., model.h5)')
+    parser.add_argument('--epochs', type=int, default=15)
+    parser.add_argument('--batch', type=int, default=64)
+    parser.add_argument('--max-per-class', type=int, default=None,
+                        help='Limit number of images per class (e.g., 100)')
+    parser.add_argument('--sample-fraction', type=float, default=None,
+                        help='Sample fraction of images per class (0.0-1.0)')
+    parser.add_argument('--no-plot', action='store_true', help='Do not show sample plots')
+    args = parser.parse_args()
+
 
 
 
