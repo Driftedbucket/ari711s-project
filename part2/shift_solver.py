@@ -9,7 +9,7 @@ def __init__(self, staff_file:str|Path):
 def _load_staff(self, staff_file: Path) -> dict[str, set[int]]:
 def _build_neighbors(self) -> None:
 def _parse_variable(self, variable: str) -> tuple[int, str]:
-def _violates_rest_constraint(
+def _violates_rest_constraint(self, variable_x: str, nurse_x: str, variable_y: str, nurse_y: str)
 def enforce_node_consistency(self) -> None:
 def revise(self, x: str, y: str) -> bool:
 def ac3(self, arcs: list[tuple[str, str]] | None = None) -> bool:
