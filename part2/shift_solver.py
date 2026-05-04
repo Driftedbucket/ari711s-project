@@ -94,6 +94,33 @@ if day_number not in self.staff_leaves[nurse]
     def select_unassigned_variable(self, assignment: dict[str, str]) -> str:
     def order_domain_values(self, variable: str, assignment: dict[str, str]) -> list[str]:
     def _forward_check(self, variable: str, nurse: str, assignment: dict[str, str]) -> bool:
+        """
+Prune domains after an assignment.
+
+1. Remove the same nurse from the next morning / previous night if rest is violated.
+2. If a nurse reaches the 5-shift cap, remove them from all other unassigned domains.
+"""
+for neighbor in self.neighbors[variable]:
+if neighbor in assignment:
+continue
+if nurse in self.domains[neighbor] and self._violates_rest_constraint(
+variable, nurse, neighbor, nurse
+):
+self.domains[neighbor].remove(nurse)
+if not self.domains[neighbor]:
+return False
+
+counts = Counter(assignment.values())
+if counts[nurse] >= self.MAX_SHIFTS_PER_NURSE:
+for other in self.variables:
+if other in assignment:
+continue
+if nurse in self.domains[other]:
+self.domains[other].remove(nurse)
+if not self.domains[other]:
+return False
+
+return True
     def backtrack(self, assignment: dict[str, str]) -> dict[str, str] | None:
         if self.assignment_complete(assignment):
 return assignment
