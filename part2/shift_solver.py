@@ -32,6 +32,67 @@ class Shift_Solver:
         self._build_neighbors()
 
     def _load_staff(self, staff_file: Path) -> dict[str, set[int]]:
+        def _load_staff(self, staff_file: Path) -> dict[str, set[int]]:
+staff_leaves: dict[str, set[int]] = {}
+
+for raw_line in staff_file.read_text(encoding="utf-8").splitlines():
+line = raw_line.strip()
+if not line:
+continue
+
+parts = [part.strip() for part in line.split(",")]
+nurse = parts[0]
+leave_days = {
+int(day)
+for day in parts[1:]
+if day and day != "0"
+}
+staff_leaves[nurse] = leave_days
+
+return staff_leaves
+
+def _build_neighbors(self) -> None:
+for day_index in range(len(self.DAYS) - 1):
+night_var = f"{self.DAYS[day_index]}_Night"
+morning_var = f"{self.DAYS[day_index + 1]}_Morning"
+self.neighbors[night_var].add(morning_var)
+self.neighbors[morning_var].add(night_var)
+
+def _parse_variable(self, variable: str) -> tuple[int, str]:
+day_name, shift_name = variable.split("_", 1)
+return self.DAYS.index(day_name) + 1, shift_name
+
+def _violates_rest_constraint(
+self, variable_x: str, nurse_x: str, variable_y: str, nurse_y: str
+) -> bool:
+if nurse_x != nurse_y:
+return False
+
+day_x, shift_x = self._parse_variable(variable_x)
+day_y, shift_y = self._parse_variable(variable_y)
+
+return (
+shift_x == "Night"
+and shift_y == "Morning"
+and day_y == day_x + 1
+) or (
+shift_y == "Night"
+and shift_x == "Morning"
+and day_x == day_y + 1
+)
+
+def enforce_node_consistency(self) -> None:
+"""
+Remove nurses from a shift's domain if they are on leave that day.
+"""
+for variable in self.variables:
+day_number, _ = self._parse_variable(variable)
+self.domains[variable] = {
+nurse
+for nurse in self.domains[variable]
+if day_number not in self.staff_leaves[nurse]
+}
+
     def _build_neighbors(self) -> None:
     def _parse_variable(self, variable: str) -> tuple[int, str]:
     def _violates_rest_constraint(self, variable_x: str, nurse_x: str, variable_y: str, nurse_y: str)
@@ -47,3 +108,4 @@ class Shift_Solver:
     def solve(self) -> dict[str, str] | None:
     def format_schedule(self, assignment: dict[str, str]) -> str:
     def main() -> None:
+
