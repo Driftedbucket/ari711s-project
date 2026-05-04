@@ -18,6 +18,43 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 IMG_SIZE = (30,30)
 
 def load_data(dataset_path, max_per_class=None, sample_fraction=None):
+    images = []
+    labels = []
+    classes = []
+    # Expect subfolders named 0..42 (or any integer labels)
+    for entry in sorted(os.listdir(dataset_path)):
+        full = os.path.join(dataset_path, entry)
+        if not os.path.isdir(full):
+            continue
+        try:
+            label = int(entry)
+        except ValueError:
+            # skip unexpected folders
+            continue
+        classes.append(label)
+        # Collect files for this class and optionally sample a subset
+        files = [f for f in os.listdir(full) if f.lower().endswith(('.ppm', '.jpg', '.jpeg', '.png'))]
+        if len(files) == 0:
+            continue
+        # Determine sample size
+        if max_per_class is not None:
+            k = min(max_per_class, len(files))
+            chosen = random.sample(files, k)
+        elif sample_fraction is not None and 0.0 < sample_fraction < 1.0:
+            k = max(1, int(len(files) * sample_fraction))
+            chosen = random.sample(files, k)
+        else:
+            chosen = files
+  
+        for fname in chosen:
+            fpath = os.path.join(full, fname)
+            img = cv2.imread(fpath)
+            if img is None:
+                continue
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            img = cv2.resize(img, IMG_SIZE)
+            images.append(img)
+            labels.append(label)
 def build_model(input_shape, num_classes):
 def plot_samples(X, y_true, y_pred, class_map=None, n=8):
 def main():
