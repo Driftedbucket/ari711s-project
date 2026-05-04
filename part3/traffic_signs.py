@@ -135,6 +135,30 @@ def main():
     X_train, X_test, y_train, y_test, y_train_raw, y_test_raw = train_test_split(
         X, y_cat, y_raw, test_size=0.2, random_state=42, stratify=y_raw)
 
+    print('Building model...')
+    model = build_model(input_shape=X.shape[1:], num_classes=num_classes)
+    model.summary()
+
+    datagen = ImageDataGenerator(
+        rotation_range=10,
+        width_shift_range=0.1,
+        height_shift_range=0.1,
+        shear_range=0.1,
+        zoom_range=0.1,
+        horizontal_flip=False,
+        fill_mode='nearest'
+    )
+
+    steps_per_epoch = max(1, len(X_train) // args.batch)
+    print('Training model...')
+    history = model.fit(
+        datagen.flow(X_train, y_train, batch_size=args.batch),
+        steps_per_epoch=steps_per_epoch,
+        epochs=args.epochs,
+        validation_data=(X_test, y_test),
+        verbose=2
+    )
+
 
 
 
