@@ -172,6 +172,9 @@ def main():
     print('\nClassification report:')
     print(classification_report(y_test_raw, y_pred, digits=4))
 
+    print('Confusion matrix:')
+    cm = confusion_matrix(y_test_raw, y_pred)
+    print(cm)
 
 
 
