@@ -128,6 +128,13 @@ def main():
         print(f"Dataset path not found or not a directory: {dataset_path}")
         sys.exit(1)
 
+    print('Loading data...')
+    X, y_cat, y_raw, num_classes = load_data(dataset_path, max_per_class=args.max_per_class, sample_fraction=args.sample_fraction)
+    print(f'Data loaded: {X.shape[0]} images, {num_classes} classes')
+
+    X_train, X_test, y_train, y_test, y_train_raw, y_test_raw = train_test_split(
+        X, y_cat, y_raw, test_size=0.2, random_state=42, stratify=y_raw)
+
 
 
 
