@@ -32,7 +32,24 @@ class Shift_Solver:
         self._build_neighbors()
 
     def _load_staff(self, staff_file: Path) -> dict[str, set[int]]:
-       
+       staff_leaves: dict[str, set[int]] = {}
+
+for raw_line in staff_file.read_text(encoding="utf-8").splitlines():
+line = raw_line.strip()
+if not line:
+continue
+
+parts = [part.strip() for part in line.split(",")]
+nurse = parts[0]
+leave_days = {
+int(day)
+for day in parts[1:]
+if day and day != "0"
+}
+staff_leaves[nurse] = leave_days
+
+return staff_leaves
+
     def _build_neighbors(self) -> None:
     def _parse_variable(self, variable: str) -> tuple[int, str]:
     def _violates_rest_constraint(self, variable_x: str, nurse_x: str, variable_y: str, nurse_y: str)
