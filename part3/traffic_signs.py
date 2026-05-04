@@ -55,6 +55,15 @@ def load_data(dataset_path, max_per_class=None, sample_fraction=None):
             img = cv2.resize(img, IMG_SIZE)
             images.append(img)
             labels.append(label)
+    if len(images) == 0:
+        raise RuntimeError(f'No images found in {dataset_path}')
+
+    X = np.array(images, dtype='float32') / 255.0
+    y = np.array(labels, dtype='int32')
+    # Use unique labels to determine number of classes (robust if labels aren't contiguous)
+    num_classes = int(np.unique(y).shape[0])
+    y_cat = to_categorical(y, num_classes)
+    return X, y_cat, y, num_classes
 def build_model(input_shape, num_classes):
 def plot_samples(X, y_true, y_pred, class_map=None, n=8):
 def main():
