@@ -57,6 +57,8 @@ morning_var = f"{self.DAYS[day_index + 1]}_Morning"
 self.neighbors[night_var].add(morning_var)
 self.neighbors[morning_var].add(night_var)
     def _parse_variable(self, variable: str) -> tuple[int, str]:
+        day_name, shift_name = variable.split("_", 1)
+return self.DAYS.index(day_name) + 1, shift_name
     def _violates_rest_constraint(self, variable_x: str, nurse_x: str, variable_y: str, nurse_y: str)
     def enforce_node_consistency(self) -> None:
     def revise(self, x: str, y: str) -> bool:
