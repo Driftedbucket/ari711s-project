@@ -159,7 +159,7 @@ def main():
         verbose=2
     )
 
-     if model_out:
+    if model_out:
         model.save(model_out)
         print(f'Model saved to {model_out}')
 
