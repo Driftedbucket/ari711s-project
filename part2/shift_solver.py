@@ -51,6 +51,11 @@ staff_leaves[nurse] = leave_days
 return staff_leaves
 
     def _build_neighbors(self) -> None:
+        or day_index in range(len(self.DAYS) - 1):
+night_var = f"{self.DAYS[day_index]}_Night"
+morning_var = f"{self.DAYS[day_index + 1]}_Morning"
+self.neighbors[night_var].add(morning_var)
+self.neighbors[morning_var].add(night_var)
     def _parse_variable(self, variable: str) -> tuple[int, str]:
     def _violates_rest_constraint(self, variable_x: str, nurse_x: str, variable_y: str, nurse_y: str)
     def enforce_node_consistency(self) -> None:
