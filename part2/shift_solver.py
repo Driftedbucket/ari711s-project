@@ -60,6 +60,22 @@ self.neighbors[morning_var].add(night_var)
         day_name, shift_name = variable.split("_", 1)
 return self.DAYS.index(day_name) + 1, shift_name
     def _violates_rest_constraint(self, variable_x: str, nurse_x: str, variable_y: str, nurse_y: str)
+-> bool:
+if nurse_x != nurse_y:
+return False
+
+day_x, shift_x = self._parse_variable(variable_x)
+day_y, shift_y = self._parse_variable(variable_y)
+
+return (
+shift_x == "Night"
+and shift_y == "Morning"
+and day_y == day_x + 1
+) or (
+shift_y == "Night"
+and shift_x == "Morning"
+and day_x == day_y + 1
+)
     def enforce_node_consistency(self) -> None:
     def revise(self, x: str, y: str) -> bool:
     def ac3(self, arcs: list[tuple[str, str]] | None = None) -> bool:
