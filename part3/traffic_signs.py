@@ -104,6 +104,8 @@ def plot_samples(X, y_true, y_pred, class_map=None, n=8):
         plabel = class_map[pred] if class_map else str(pred)
         color = 'green' if true == pred else 'red'
         plt.title(f'T:{tlabel}\nP:{plabel}', color=color, fontsize=8)
+    plt.tight_layout()
+    plt.show()
 def main():
 
 
