@@ -129,10 +129,26 @@ class Shift_Solver:
                     queue.append((z, x))
 
         return True
+        
     def assignment_complete(self, assignment: dict[str, str]) -> bool:
         return len(assignment) == len(self.variables)
 
     def consistent(self, assignment: dict[str, str]) -> bool:
+        counts = Counter(assignment.values())
+        if any(count > self.MAX_SHIFTS_PER_NURSE for count in counts.values()):
+            return False
+
+        for variable, nurse in assignment.items():
+            if nurse not in self.domains[variable]:
+                return False
+
+            for neighbor in self.neighbors[variable]:
+                if neighbor in assignment and self._violates_rest_constraint(
+                    variable, nurse, neighbor, assignment[neighbor]
+                ):
+                    return False
+
+        return True
     def select_unassigned_variable(self, assignment: dict[str, str]) -> str:
     def order_domain_values(self, variable: str, assignment: dict[str, str]) -> list[str]:
     def _forward_check(self, variable: str, nurse: str, assignment: dict[str, str]) -> bool:
