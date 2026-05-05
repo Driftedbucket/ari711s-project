@@ -111,6 +111,24 @@ class Shift_Solver:
 
 
     def ac3(self, arcs: list[tuple[str, str]] | None = None) -> bool:
+        if arcs is None:
+            queue = deque(
+                (x, y)
+                for x in self.variables
+                for y in self.neighbors[x]
+            )
+        else:
+            queue = deque(arcs)
+
+        while queue:
+            x, y = queue.popleft()
+            if self.revise(x, y):
+                if not self.domains[x]:
+                    return False
+                for z in self.neighbors[x] - {y}:
+                    queue.append((z, x))
+
+        return True
     def assignment_complete(self, assignment: dict[str, str]) -> bool:
     def consistent(self, assignment: dict[str, str]) -> bool:
     def select_unassigned_variable(self, assignment: dict[str, str]) -> str:
