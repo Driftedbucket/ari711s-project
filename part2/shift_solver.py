@@ -87,6 +87,12 @@ class Shift_Solver:
             if day_number not in self.staff_leaves[nurse]
             }
     def revise(self, x: str, y: str) -> bool:
+        
+        if y not in self.neighbors[x]:
+            return False
+
+        revised = False
+        removable: set[str] = set()
     def ac3(self, arcs: list[tuple[str, str]] | None = None) -> bool:
     def assignment_complete(self, assignment: dict[str, str]) -> bool:
     def consistent(self, assignment: dict[str, str]) -> bool:
