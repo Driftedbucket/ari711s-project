@@ -269,3 +269,6 @@ class Shift_Solver:
 
     print(solver.format_schedule(schedule))
 
+if __name__ == "__main__":
+    main()
+
