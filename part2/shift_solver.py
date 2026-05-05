@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 class Shift_Solver:
-
+"""Days, shifts and max number of shifts"""
     DAYS = [
         "Monday",
         "Tuesday",
