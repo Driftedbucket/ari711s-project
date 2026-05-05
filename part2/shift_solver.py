@@ -149,7 +149,13 @@ class Shift_Solver:
                     return False
 
         return True
+        
     def select_unassigned_variable(self, assignment: dict[str, str]) -> str:
+        unassigned = [var for var in self.variables if var not in assignment]
+        return min(
+            unassigned,
+            key=lambda var: (len(self.domains[var]), -len(self.neighbors[var]), var),
+        )
     def order_domain_values(self, variable: str, assignment: dict[str, str]) -> list[str]:
     def _forward_check(self, variable: str, nurse: str, assignment: dict[str, str]) -> bool:
         """
