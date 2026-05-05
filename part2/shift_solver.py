@@ -93,6 +93,21 @@ class Shift_Solver:
 
         revised = False
         removable: set[str] = set()
+        
+        for nurse_x in self.domains[x]:
+            has_support = any(
+                not self._violates_rest_constraint(x, nurse_x, y, nurse_y)
+                for nurse_y in self.domains[y]
+            )
+            if not has_support:
+                removable.add(nurse_x)
+
+        if removable:
+            self.domains[x] -= removable
+            revised = True
+
+
+
     def ac3(self, arcs: list[tuple[str, str]] | None = None) -> bool:
     def assignment_complete(self, assignment: dict[str, str]) -> bool:
     def consistent(self, assignment: dict[str, str]) -> bool:
