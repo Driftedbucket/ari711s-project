@@ -221,6 +221,23 @@ class Shift_Solver:
         if not self.ac3():
             return None
         return self.backtrack({})
+        
     def format_schedule(self, assignment: dict[str, str]) -> str:
+        counts = Counter(assignment.values())
+        lines = []
+
+        for day in self.DAYS:
+            lines.append(f"{day.upper()}:")
+            for shift in self.SHIFTS:
+                variable = f"{day}_{shift}"
+                lines.append(f"{shift}: {assignment[variable]}")
+            lines.append("")
+
+        lines.append("Schedule Totals:")
+        for nurse in sorted(counts):
+            lines.append(f"- {nurse}: {counts[nurse]} shifts")
+
+        lines.append("Status: Success. All 21 shifts assigned. All constraints satisfied.")
+        return "\n".join(lines)
     def main() -> None:
 
