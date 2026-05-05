@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 class Shift_Solver:
-"""Days, shifts and max number of shifts"""
+""" Days, shifts and max number of shifts """
     DAYS = [
         "Monday",
         "Tuesday",
@@ -32,7 +32,7 @@ class Shift_Solver:
         self._build_neighbors()
 
     def _load_staff(self, staff_file: Path) -> dict[str, set[int]]:
-         staff_leaves: dict[str, set[int]] = {}
+        staff_leaves: dict[str, set[int]] = {}
 
         for raw_line in staff_file.read_text(encoding="utf-8").splitlines():
             line = raw_line.strip()
@@ -59,8 +59,7 @@ class Shift_Solver:
     def _parse_variable(self, variable: str) -> tuple[int, str]:
         day_name, shift_name = variable.split("_", 1)
         return self.DAYS.index(day_name) + 1, shift_name
-    def _violates_rest_constraint(self, variable_x: str, nurse_x: str, variable_y: str, nurse_y: str)
--> bool:
+    def _violates_rest_constraint(self, variable_x: str, nurse_x: str, variable_y: str, nurse_y: str)-> bool:
         if nurse_x != nurse_y:
             return False
 
@@ -106,21 +105,22 @@ class Shift_Solver:
             if nurse in self.domains[neighbor] and self._violates_rest_constraint(
                 variable, nurse, neighbor, nurse
         ):
-            self.domains[neighbor].remove(nurse)
-            if not self.domains[neighbor]:
-                return False
-            
-            counts = Counter(assignment.values())
-            if counts[nurse] >= self.MAX_SHIFTS_PER_NURSE:
-                for other in self.variables:
-                    if other in assignment:
-                        continue
-                    if nurse in self.domains[other]:
-                        self.domains[other].remove(nurse)
-                        if not self.domains[other]:
-                            return False
+                self.domains[neighbor].remove(nurse)
+                if not self.domains[neighbor]:
+                    return False
+                
+                counts = Counter(assignment.values())
+                if counts[nurse] >= self.MAX_SHIFTS_PER_NURSE:
+                    for other in self.variables:
+                        if other in assignment:
+                            continue
+                        if nurse in self.domains[other]:
+                            self.domains[other].remove(nurse)
+                            if not self.domains[other]:
+                                return False
         
             return True
+        
     def backtrack(self, assignment: dict[str, str]) -> dict[str, str] | None:
         if self.assignment_complete(assignment):
             return assignment
@@ -131,8 +131,8 @@ class Shift_Solver:
             local_assignment = dict(assignment)
             local_assignment[variable] = nurse
 
-        if not self.consistent(local_assignment):
-            continue
+            if not self.consistent(local_assignment):
+                continue
 
         saved_domains = deepcopy(self.domains)
         self.domains[variable] = {nurse}
@@ -146,6 +146,7 @@ class Shift_Solver:
         self.domains = saved_domains
         
     return None
+
     def solve(self) -> dict[str, str] | None:
     def format_schedule(self, assignment: dict[str, str]) -> str:
     def main() -> None:
