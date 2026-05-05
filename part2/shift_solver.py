@@ -130,6 +130,8 @@ class Shift_Solver:
 
         return True
     def assignment_complete(self, assignment: dict[str, str]) -> bool:
+        return len(assignment) == len(self.variables)
+
     def consistent(self, assignment: dict[str, str]) -> bool:
     def select_unassigned_variable(self, assignment: dict[str, str]) -> str:
     def order_domain_values(self, variable: str, assignment: dict[str, str]) -> list[str]:
