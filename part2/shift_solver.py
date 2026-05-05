@@ -106,6 +106,8 @@ class Shift_Solver:
             self.domains[x] -= removable
             revised = True
 
+        return revised
+
 
 
     def ac3(self, arcs: list[tuple[str, str]] | None = None) -> bool:
