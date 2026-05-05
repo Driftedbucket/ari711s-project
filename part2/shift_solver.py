@@ -217,6 +217,10 @@ class Shift_Solver:
     return None
 
     def solve(self) -> dict[str, str] | None:
+        self.enforce_node_consistency()
+        if not self.ac3():
+            return None
+        return self.backtrack({})
     def format_schedule(self, assignment: dict[str, str]) -> str:
     def main() -> None:
 
