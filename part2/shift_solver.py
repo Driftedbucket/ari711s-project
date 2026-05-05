@@ -156,7 +156,11 @@ class Shift_Solver:
             unassigned,
             key=lambda var: (len(self.domains[var]), -len(self.neighbors[var]), var),
         )
+        
     def order_domain_values(self, variable: str, assignment: dict[str, str]) -> list[str]:
+        counts = Counter(assignment.values())
+        return sorted(self.domains[variable], key=lambda nurse: (counts[nurse], nurse))
+
     def _forward_check(self, variable: str, nurse: str, assignment: dict[str, str]) -> bool:
         """
         Prune domains after an assignment.
