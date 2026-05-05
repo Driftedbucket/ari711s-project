@@ -239,5 +239,33 @@ class Shift_Solver:
 
         lines.append("Status: Success. All 21 shifts assigned. All constraints satisfied.")
         return "\n".join(lines)
+        
     def main() -> None:
+        parser = argparse.ArgumentParser(description="Hospital shift scheduler CSP solver")
+    parser.add_argument(
+        "staff_file",
+        nargs="?",
+        default=Path(__file__).with_name("staff_small.txt"),
+        help="Path to a staff input file",
+    )
+    args = parser.parse_args()
+
+    solver = Shift_AI_Solver(args.staff_file)
+
+    print("Generating Weekly Schedule for 2026...")
+    print(f"Data loaded: {len(solver.nurses)} staff members available.")
+    print("Enforcing node consistency...")
+    solver.enforce_node_consistency()
+    print("Running AC-3 algorithm...")
+    if not solver.ac3():
+        print("Status: Failure. Constraints could not be satisfied after AC-3.")
+        return
+
+    print("Starting backtracking search...")
+    schedule = solver.backtrack({})
+    if schedule is None:
+        print("Status: Failure. No valid schedule found.")
+        return
+
+    print(solver.format_schedule(schedule))
 
